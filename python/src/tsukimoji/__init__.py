@@ -22,7 +22,7 @@ __all__ = [
     "name",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 SYNODIC_MONTH_DAYS = 29.530588853
 _SYNODIC_MONTH_SECONDS = SYNODIC_MONTH_DAYS * 24 * 60 * 60
