@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.svg" alt="Tsukimoji logo: the kanji 月 on a white and green armoured plate, surrounded by rings of moon phases" width="220">
+  <img src="logo.svg" alt="tsukiMOJi logo: the kanji 月 on a white and green armoured plate, surrounded by rings of moon phases, next to the name tsukiMOJi in brush lettering" width="640">
 </p>
 
 # 🌕 Tsukimoji
