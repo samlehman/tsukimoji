@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Tsukimoji logo: the kanji 月 surrounded by rings of moon phases">
+<title>Tsukimoji</title>
+<defs>
+  <radialGradient id="sky" cx="50%" cy="45%" r="60%">
+    <stop offset="0" stop-color="#2a2f6b"/>
+    <stop offset="0.6" stop-color="#141739"/>
+    <stop offset="1" stop-color="#0a0b1f"/>
+  </radialGradient>
+  <radialGradient id="lit" cx="40%" cy="35%" r="75%">
+    <stop offset="0" stop-color="#fff8e1"/>
+    <stop offset="0.7" stop-color="#f6dc9a"/>
+    <stop offset="1" stop-color="#e2b55c"/>
+  </radialGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff3c4"/>
+    <stop offset="0.55" stop-color="#f4cf73"/>
+    <stop offset="1" stop-color="#d79a3a"/>
+  </linearGradient>
+  <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+    <stop offset="0.55" stop-color="#f6dc9a" stop-opacity="0.35"/>
+    <stop offset="1" stop-color="#f6dc9a" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="3" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<circle cx="256.0" cy="256.0" r="254.0" fill="url(#sky)"/>
+<circle cx="256.0" cy="256.0" r="250.0" fill="none" stroke="#f6dc9a" stroke-opacity="0.25" stroke-width="1"/>
+<g fill="none" stroke="#f6dc9a">
+<circle cx="256.00" cy="256.00" r="198.80" stroke-width="0.9" stroke-opacity="0.22"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g filter="url(#glow)">
+<circle cx="256.00" cy="57.20" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/>
+<circle cx="396.57" cy="115.43" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><path d="M396.57,69.23A46.20,46.20 0 0 1 396.57,161.63A32.67,46.20 0 0 0 396.57,69.23Z" fill="url(#lit)"/>
+<circle cx="454.80" cy="256.00" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><path d="M454.80,209.80A46.20,46.20 0 0 1 454.80,302.20A0.00,46.20 0 0 0 454.80,209.80Z" fill="url(#lit)"/>
+<circle cx="396.57" cy="396.57" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><path d="M396.57,350.37A46.20,46.20 0 0 1 396.57,442.77A32.67,46.20 0 0 1 396.57,350.37Z" fill="url(#lit)"/>
+<circle cx="256.00" cy="454.80" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><circle cx="256.00" cy="454.80" r="46.20" fill="url(#lit)"/>
+<circle cx="115.43" cy="396.57" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><path d="M115.43,350.37A46.20,46.20 0 0 0 115.43,442.77A32.67,46.20 0 0 0 115.43,350.37Z" fill="url(#lit)"/>
+<circle cx="57.20" cy="256.00" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><path d="M57.20,209.80A46.20,46.20 0 0 0 57.20,302.20A0.00,46.20 0 0 0 57.20,209.80Z" fill="url(#lit)"/>
+<circle cx="115.43" cy="115.43" r="46.20" fill="#1f2547" stroke="#f6dc9a" stroke-opacity="0.35" stroke-width="2.77"/><path d="M115.43,69.23A46.20,46.20 0 0 0 115.43,161.63A32.67,46.20 0 0 1 115.43,69.23Z" fill="url(#lit)"/>
+</g>
+<circle cx="256.0" cy="256.0" r="175.00" fill="url(#halo)"/>
+<circle cx="256.0" cy="256.0" r="140" fill="#12152f" stroke="url(#gold)" stroke-width="3"/>
+<circle cx="256.0" cy="256.0" r="133" fill="none" stroke="#f6dc9a" stroke-opacity="0.3" stroke-width="1"/>
+<path d="M1092 92Q1200 82 1325 82Q1397 82 1397 154V512H665Q636 294 557 139Q494 17 371 -123Q339 -158 328 -158Q313 -158 280 -125Q221 -65 133 -29Q275 104 341 217Q415 344 443 527Q471 702 471 1019V1321L467 1599Q467 1617 471 1621Q475 1624 489 1624L762 1620H1331L1601 1624Q1618 1624 1621 1619Q1624 1615 1624 1599L1620 1321V516L1626 107Q1626 -21 1561 -84Q1519 -122 1442 -133Q1376 -143 1221 -143Q1169 -143 1160 -134Q1151 -125 1145 -80Q1131 21 1092 92ZM686 711H1397V970H694Q690 795 686 711ZM1397 1417H694V1169H1397Z" transform="translate(256.0,256.0) scale(0.09428,-0.09428) translate(-879.5,-733.0)" fill="url(#gold)" filter="url(#glow)"/>
+</svg>

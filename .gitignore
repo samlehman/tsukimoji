@@ -1,0 +1,21 @@
+# Node
+node_modules/
+*.tgz
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Ruby
+*.gem
+.bundle/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

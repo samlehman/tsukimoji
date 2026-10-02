@@ -1,0 +1,39 @@
+{
+  "name": "tsukimoji",
+  "version": "0.1.0",
+  "description": "Moon phase emoji for any date",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.js",
+      "import": "./index.mjs"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts",
+    "README.md"
+  ],
+  "keywords": [
+    "moon",
+    "moon-phase",
+    "emoji",
+    "lunar",
+    "astronomy"
+  ],
+  "license": "MIT",
+  "author": "Samuel <grieve@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samlehman/tsukimoji.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
