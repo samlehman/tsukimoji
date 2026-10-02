@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sam@bmore.md"]
 
   spec.summary       = "Moon phase emoji for any date"
-  spec.description   = "Tsukimoji computes the current (or any) lunar phase and " \
+  spec.description   = "tsukiMOJi computes the current (or any) lunar phase and " \
                         "returns the matching emoji, phase name, age in days, " \
                         "and illumination fraction."
   spec.homepage      = "https://github.com/samlehman/tsukimoji"

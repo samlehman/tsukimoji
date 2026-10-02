@@ -2,7 +2,7 @@
   <img src="logo.png" alt="tsukiMOJi logo: the kanji 月 on a white and green armoured plate, surrounded by rings of moon phases, next to the name tsukiMOJi in brush lettering" width="640">
 </p>
 
-# 🌕 Tsukimoji
+# 🌕 tsukiMOJi
 
 [![npm](https://img.shields.io/npm/v/tsukimoji)](https://www.npmjs.com/package/tsukimoji)
 [![PyPI](https://img.shields.io/pypi/v/tsukimoji)](https://pypi.org/project/tsukimoji/)
@@ -11,7 +11,7 @@
 
 **Moon phase emoji for any date.** 月 (*tsuki*, "moon") + *moji*, as in emoji.
 
-Tsukimoji is a tiny, dependency-free library that tells you what the moon looks
+tsukiMOJi is a tiny, dependency-free library that tells you what the moon looks
 like at any moment, as an emoji, a phase name, the moon's age in days, and how
 much of it is lit. It is available for **JavaScript/TypeScript**, **Python**, and
 **Ruby**, with the same algorithm and results in each.
@@ -265,7 +265,7 @@ So just under three days before full moon (at 14.77 days), about 91% lit.
 
 ## Accuracy
 
-Tsukimoji uses the *average* length of a lunar cycle. The real moon speeds up
+tsukiMOJi uses the *average* length of a lunar cycle. The real moon speeds up
 and slows down along its orbit, so actual phase times can differ from this
 estimate by more than half a day. That is plenty for showing an emoji, but
 if you need exact phase times (for astronomy, tides, or religious calendars),

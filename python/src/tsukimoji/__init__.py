@@ -1,4 +1,4 @@
-"""Tsukimoji: moon phase emoji for any date.
+"""tsukiMOJi: moon phase emoji for any date.
 
 (tsuki, "moon") + moji, as in emoji.
 

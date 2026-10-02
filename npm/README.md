@@ -1,4 +1,4 @@
-# Tsukimoji
+# tsukiMOJi
 
 Moon phase emoji for any date. 月 (tsuki, "moon") + moji, as in emoji.
 
@@ -24,7 +24,7 @@ npm install tsukimoji
 
 ## How it works
 
-Tsukimoji measures elapsed time since a known new moon (2000-01-06
+tsukiMOJi measures elapsed time since a known new moon (2000-01-06
 18:14 UTC) against the synodic month (29.530588853 days) to find how far
 into the current lunar cycle a given moment falls, then maps that
 fraction onto the eight standard moon-phase emoji (🌑🌒🌓🌔🌕🌖🌗🌘).

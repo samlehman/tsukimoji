@@ -13,7 +13,10 @@ library implemented three times, once per language, published under the name
   uppercase "MOJ", lowercase "i". Use this in READMEs, docs, descriptions,
   titles and the logo's accessible text. Never write "Tsukimoji" or
   "TsukiMoji", even at the start of a sentence.
-- Identifiers keep their technical forms. Don't rename these:
+- Inside code, only user-facing text gets the branding: comments, docstrings,
+  package descriptions, page titles and other strings a person reads.
+- Identifiers keep their technical forms. Don't rename variables, methods,
+  classes, modules or files, including:
   - package names `tsukimoji` (npm, PyPI and RubyGems expect lowercase)
   - import paths: `require("tsukimoji")`, `from tsukimoji import ...`, `require "tsukimoji"`
   - the Ruby module `Tsukimoji` (Ruby constants must start with a capital)

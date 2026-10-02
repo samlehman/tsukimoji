@@ -2,7 +2,7 @@
 
 require "time"
 
-# Tsukimoji ("moon" + "moji", as in emoji) computes the current lunar
+# tsukiMOJi ("moon" + "moji", as in emoji) computes the current lunar
 # phase for any date and returns the matching emoji, phase name, age in
 # days, and illumination fraction.
 #
