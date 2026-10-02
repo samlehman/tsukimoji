@@ -37,6 +37,35 @@ check(failures, "emoji shortcut matches",
 check(failures, "name shortcut matches",
       Tsukimoji.name(half_cycle_later) == at_full_moon.name)
 
+# Moment at a given fraction of a cycle, some whole cycles from the reference.
+def at_cycle(cycles, offset_seconds = 0)
+  Tsukimoji::KNOWN_NEW_MOON + (cycles * Tsukimoji::SYNODIC_MONTH_SECONDS) + offset_seconds
+end
+
+# Every phase at its exact point, in this cycle, before 2000 and well after.
+[0, -3, 120].each do |cycle|
+  Tsukimoji::PHASES.each_with_index do |expected, k|
+    phase = Tsukimoji.phase(at_cycle(cycle + (k / 8.0)))
+    check(failures, "cycle #{cycle}: #{expected[:name]} at #{k}/8",
+          phase.emoji == expected[:emoji] && phase.name == expected[:name])
+  end
+end
+
+# Each phase changes halfway between exact points, at (2k + 1)/16.
+# The last boundary (15/16) wraps back round to New Moon.
+Tsukimoji::PHASES.each_with_index do |before, k|
+  after = Tsukimoji::PHASES[(k + 1) % 8]
+  boundary = (2 * k + 1) / 16.0
+  check(failures, "just before #{2 * k + 1}/16 is #{before[:name]}",
+        Tsukimoji.phase(at_cycle(boundary, -3600)).name == before[:name])
+  check(failures, "just after #{2 * k + 1}/16 is #{after[:name]}",
+        Tsukimoji.phase(at_cycle(boundary, 3600)).name == after[:name])
+end
+
+# Quarters are half lit.
+check(failures, "first quarter ~50% lit", (Tsukimoji.phase(at_cycle(2 / 8.0)).illumination - 0.5).abs < 0.001)
+check(failures, "last quarter ~50% lit", (Tsukimoji.phase(at_cycle(6 / 8.0)).illumination - 0.5).abs < 0.001)
+
 if failures.empty?
   puts "\nAll checks passed."
   exit 0

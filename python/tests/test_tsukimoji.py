@@ -46,6 +46,35 @@ class TestTsukimoji(unittest.TestCase):
         self.assertEqual(emoji(when), phase.emoji)
         self.assertEqual(name(when), phase.name)
 
+    def test_every_phase_at_its_exact_point(self):
+        # In this cycle, before 2000, and well after.
+        for cycle in (0, -3, 120):
+            for k, (expected_emoji, expected_name) in enumerate(PHASES):
+                with self.subTest(cycle=cycle, phase=expected_name):
+                    phase = get_moon_phase(_at_cycle(cycle + k / 8))
+                    self.assertEqual(phase.emoji, expected_emoji)
+                    self.assertEqual(phase.name, expected_name)
+
+    def test_phase_boundaries(self):
+        # Each phase changes halfway between exact points, at (2k + 1)/16.
+        # The last boundary (15/16) wraps back round to New Moon.
+        hour = timedelta(hours=1)
+        for k, (_, before) in enumerate(PHASES):
+            after = PHASES[(k + 1) % 8][1]
+            boundary = (2 * k + 1) / 16
+            with self.subTest(boundary=f"{2 * k + 1}/16"):
+                self.assertEqual(get_moon_phase(_at_cycle(boundary) - hour).name, before)
+                self.assertEqual(get_moon_phase(_at_cycle(boundary) + hour).name, after)
+
+    def test_quarters_half_lit(self):
+        self.assertAlmostEqual(get_moon_phase(_at_cycle(2 / 8)).illumination, 0.5, places=3)
+        self.assertAlmostEqual(get_moon_phase(_at_cycle(6 / 8)).illumination, 0.5, places=3)
+
+
+def _at_cycle(cycles):
+    """Moment at a given number of cycles (whole or fractional) from the reference."""
+    return KNOWN_NEW_MOON + timedelta(days=cycles * SYNODIC_MONTH_DAYS)
+
 
 if __name__ == "__main__":
     unittest.main()
