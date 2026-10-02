@@ -181,7 +181,7 @@ The eight phases:
    (29.530588853 days). The fractional part says how far into the current cycle
    that moment falls, from 0 (new moon) to just under 1.
 3. Map that fraction onto the eight phases. Each phase covers an eighth of the
-   cycle, centred on its exact point, so "Full Moon" covers the days on either
+   cycle, centered on its exact point, so "Full Moon" covers the days on either
    side of the true full moon.
 4. Work out illumination from the same fraction with a cosine curve:
    `(1 - cos(2π × fraction)) / 2`.
@@ -219,7 +219,7 @@ Using `floor` (not truncation) keeps `age` in `[0, 1)` for negative `days` too.
 
 **3. Phase index.** Eight phases, so each one gets 1/8 of the cycle. Without
 correction, `floor(age × 8)` would make "New Moon" start *at* the new moon and
-run 3.7 days after it. Instead, shifting by half a slot (1/16) centres each
+run 3.7 days after it. Instead, shifting by half a slot (1/16) centers each
 phase on its exact point:
 
 ```

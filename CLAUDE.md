@@ -30,7 +30,7 @@ updated in all three.
 - Synodic month: `29.530588853` days
 - Reference new moon: 2000-01-06 18:14 UTC
 - `age = frac((t - ref) / synodic)`, normalised into `[0, 1)`
-- Phase index: `floor((age + 1/16) * 8) % 8` (each phase is centred on its exact point)
+- Phase index: `floor((age + 1/16) * 8) % 8` (each phase is centered on its exact point)
 - Illumination: `(1 - cos(2π·age)) / 2`
 - Phases, in order: 🌑 New Moon, 🌒 Waxing Crescent, 🌓 First Quarter,
   🌔 Waxing Gibbous, 🌕 Full Moon, 🌖 Waning Gibbous, 🌗 Last Quarter,
@@ -95,7 +95,7 @@ folder. To change the logo, rewrite the generator or edit the SVGs directly.
 Design: mecha-armour style (inspired by Gundam, no actual Gundam branding).
 Mostly white with green highlights:
 - a white octagonal armour plate with a gunmetal edge, green trim, panel lines and corner bolts
-- a gunmetal chest plate in the centre, with a green V-fin crest and 月 in white
+- a gunmetal chest plate in the center, with a green V-fin crest and 月 in white
   with a green offset shadow, plus a small "TSK-001" marking
 - the 8 main moons are white-on-dark in octagonal sockets, clockwise from 🌑 at the top
 - the smaller recursive rings are green "sensor light" moons on octagonal orbits.
