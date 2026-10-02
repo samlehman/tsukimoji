@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.svg" alt="Tsukimoji logo: the kanji 月 surrounded by rings of moon phases" width="220">
+  <img src="logo.svg" alt="Tsukimoji logo: the kanji 月 on a white and green armoured plate, surrounded by rings of moon phases" width="220">
 </p>
 
 # 🌕 Tsukimoji
@@ -28,6 +28,7 @@ much of it is lit. It is available for **JavaScript/TypeScript**, **Python**, an
 - [Ruby](#ruby)
 - [The result](#the-result)
 - [How it works](#how-it-works)
+- [The math](#the-math)
 - [Accuracy](#accuracy)
 - [Development](#development)
 - [Roadmap](#roadmap)
@@ -187,6 +188,80 @@ The eight phases:
 
 All three libraries use the same constants and formula, so they give the same
 answer for the same moment.
+
+## The maths
+
+The whole calculation is four short formulas.
+
+**1. Days since the reference new moon.** With `t` the moment you ask about and
+`ref` = 2000-01-06 18:14 UTC:
+
+```
+days = (t − ref) / 86 400 seconds
+```
+
+This can be negative for dates before 2000. That's fine.
+
+**2. Age as a fraction of the cycle.** One synodic month (new moon to new moon)
+averages `S = 29.530588853` days. Dividing by it counts cycles since the
+reference; the whole part is how many full cycles have passed, and the
+fractional part is where we are in the current one:
+
+```
+cycles = days / S
+age    = cycles − floor(cycles)        → always in [0, 1)
+ageDays = age × S                      → 0 to about 29.53
+```
+
+Using `floor` (not truncation) keeps `age` in `[0, 1)` for negative `days` too.
+`age` is effectively the angle between the sun and moon as seen from Earth:
+0 is new moon, 0.25 first quarter, 0.5 full moon, 0.75 last quarter.
+
+**3. Phase index.** Eight phases, so each one gets 1/8 of the cycle. Without
+correction, `floor(age × 8)` would make "New Moon" start *at* the new moon and
+run 3.7 days after it. Instead, shifting by half a slot (1/16) centres each
+phase on its exact point:
+
+```
+index = floor((age + 1/16) × 8) mod 8
+```
+
+| Index | Phase | `age` range | Days into cycle |
+| --- | --- | --- | --- |
+| 0 | 🌑 New Moon | 15/16 – 1/16 (wraps) | 27.68 – 1.85 |
+| 1 | 🌒 Waxing Crescent | 1/16 – 3/16 | 1.85 – 5.54 |
+| 2 | 🌓 First Quarter | 3/16 – 5/16 | 5.54 – 9.23 |
+| 3 | 🌔 Waxing Gibbous | 5/16 – 7/16 | 9.23 – 12.92 |
+| 4 | 🌕 Full Moon | 7/16 – 9/16 | 12.92 – 16.61 |
+| 5 | 🌖 Waning Gibbous | 9/16 – 11/16 | 16.61 – 20.30 |
+| 6 | 🌗 Last Quarter | 11/16 – 13/16 | 20.30 – 23.99 |
+| 7 | 🌘 Waning Crescent | 13/16 – 15/16 | 23.99 – 27.68 |
+
+The `mod 8` folds the last half-slot (age ≥ 15/16, the days just before the
+next new moon) back into New Moon.
+
+**4. Illumination.** Treat the moon as a sphere lit from one side, with the
+sun–moon angle `θ = 2π × age`. The lit fraction of the visible disc is:
+
+```
+illumination = (1 − cos θ) / 2
+```
+
+This is 0 at new moon (cos 0 = 1), 0.5 at the quarters (cos 90° = 0), and 1 at
+full moon (cos 180° = −1). It follows a smooth S-curve, so the moon brightens
+slowly near new and full and fastest around the quarters.
+
+### Worked example: 2026-01-01 00:00 UTC
+
+```
+days          = 9491.2403
+cycles        = 9491.2403 / 29.530588853 = 321.4037
+age           = 0.4037                    → ageDays = 11.92
+index         = floor((0.4037 + 0.0625) × 8) mod 8 = floor(3.73) = 3   → 🌔 Waxing Gibbous
+illumination  = (1 − cos(2π × 0.4037)) / 2 = 0.911
+```
+
+So just under three days before full moon (at 14.77 days), about 91% lit.
 
 ## Accuracy
 

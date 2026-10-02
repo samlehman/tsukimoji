@@ -15,6 +15,9 @@ venv/
 *.gem
 .bundle/
 
+# Personal Claude Code notes
+CLAUDE.local.md
+
 # OS / editor
 .DS_Store
 Thumbs.db
