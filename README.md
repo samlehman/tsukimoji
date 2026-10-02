@@ -320,9 +320,6 @@ please update all three libraries and their tests together.
 ---
 
 <p align="center">
-  <img src="made-in-baltimore.png" alt="Made in Baltimore" width="160">
-</p>
-
-<p align="center">
-  ☕ <a href="https://paypal.me/samlehman">Buy me a coffee</a> · <a href="https://paypal.me/samlehman">こーひーをおごって</a>
+  <img src="made-in-baltimore.png" alt="Made in Baltimore" width="88" align="middle">
+  &nbsp;&nbsp;☕ <a href="https://paypal.me/samlehman">Buy me a coffee</a> · <a href="https://paypal.me/samlehman">こーひーをおごって</a>
 </p>

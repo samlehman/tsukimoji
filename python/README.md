@@ -35,3 +35,10 @@ cosine curve, for display purposes.
 ## License
 
 MIT
+
+---
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/samlehman/tsukimoji/main/made-in-baltimore.png" alt="Made in Baltimore" width="88" align="middle">
+  &nbsp;&nbsp;☕ <a href="https://paypal.me/samlehman">Buy me a coffee</a> · <a href="https://paypal.me/samlehman">こーひーをおごって</a>
+</p>
