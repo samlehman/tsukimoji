@@ -16,13 +16,14 @@ __all__ = [
     "SYNODIC_MONTH_DAYS",
     "KNOWN_NEW_MOON",
     "PHASES",
+    "FACES",
     "MoonPhase",
     "get_moon_phase",
     "emoji",
     "name",
 ]
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 SYNODIC_MONTH_DAYS = 29.530588853
 _SYNODIC_MONTH_SECONDS = SYNODIC_MONTH_DAYS * 24 * 60 * 60
@@ -41,6 +42,9 @@ PHASES = (
     ("\U0001F318", "Waning Crescent"),
 )
 
+# Optional face emoji, by phase index: 🌚 for New Moon, 🌝 for Full Moon.
+FACES = {0: "\U0001F31A", 4: "\U0001F31D"}
+
 
 @dataclass(frozen=True)
 class MoonPhase:
@@ -53,10 +57,11 @@ class MoonPhase:
         return self.emoji
 
 
-def get_moon_phase(when: Optional[datetime] = None) -> MoonPhase:
+def get_moon_phase(when: Optional[datetime] = None, *, faces: bool = False) -> MoonPhase:
     """Return the MoonPhase for ``when`` (defaults to now, UTC).
 
-    A naive ``datetime`` is treated as UTC.
+    A naive ``datetime`` is treated as UTC. Pass ``faces=True`` to get
+    🌚 and 🌝 for new and full moons.
     """
     if when is None:
         when = datetime.now(timezone.utc)
@@ -70,6 +75,8 @@ def get_moon_phase(when: Optional[datetime] = None) -> MoonPhase:
     illumination = (1 - math.cos(age * 2 * math.pi)) / 2
 
     phase_emoji, phase_name = PHASES[index]
+    if faces:
+        phase_emoji = FACES.get(index, phase_emoji)
     return MoonPhase(
         emoji=phase_emoji,
         name=phase_name,
@@ -78,9 +85,9 @@ def get_moon_phase(when: Optional[datetime] = None) -> MoonPhase:
     )
 
 
-def emoji(when: Optional[datetime] = None) -> str:
+def emoji(when: Optional[datetime] = None, *, faces: bool = False) -> str:
     """Shortcut: just the emoji for ``when`` (defaults to now)."""
-    return get_moon_phase(when).emoji
+    return get_moon_phase(when, faces=faces).emoji
 
 
 def name(when: Optional[datetime] = None) -> str:

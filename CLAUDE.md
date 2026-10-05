@@ -58,6 +58,7 @@ The API names follow each language's conventions. Keep them that way:
 | --- | --- | --- | --- |
 | Full result | `getMoonPhase(date?)` | `get_moon_phase(when=None)` | `Tsukimoji.phase(time)` |
 | Shortcuts | `emoji()`, `name()` | `emoji()`, `name()` | `Tsukimoji.emoji`, `Tsukimoji.name` |
+| Face option (🌚/🌝 for new/full) | `{ faces: true }` | `faces=True` | `faces: true` |
 | Age field | `ageDays` | `age_days` | `age_days` |
 | Result type | plain object | frozen `MoonPhase` dataclass | `Tsukimoji::Phase` Struct |
 

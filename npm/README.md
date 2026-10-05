@@ -14,6 +14,9 @@ phase.illumination; // 0.87
 
 emoji();            // just the emoji, for "now"
 getMoonPhase(new Date("2026-01-01")); // phase for any specific date
+
+// Moon faces: 🌚 for New Moon and 🌝 for Full Moon
+emoji(new Date("2026-10-26T04:00:00Z"), { faces: true }); // "🌝"
 ```
 
 ## Installation

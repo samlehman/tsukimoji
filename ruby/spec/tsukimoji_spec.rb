@@ -62,6 +62,18 @@ Tsukimoji::PHASES.each_with_index do |before, k|
         Tsukimoji.phase(at_cycle(boundary, 3600)).name == after[:name])
 end
 
+# Face emoji option: 🌚 and 🌝 replace new and full moon, nothing else changes.
+check(failures, "faces: new moon is 🌚", Tsukimoji.phase(Tsukimoji::KNOWN_NEW_MOON, faces: true).emoji == "\u{1F31A}")
+check(failures, "faces: full moon is 🌝", Tsukimoji.phase(half_cycle_later, faces: true).emoji == "\u{1F31D}")
+check(failures, "faces: names unchanged", Tsukimoji.phase(half_cycle_later, faces: true).name == "Full Moon")
+check(failures, "faces: off by default", Tsukimoji.phase(Tsukimoji::KNOWN_NEW_MOON).emoji == "\u{1F311}")
+check(failures, "faces: emoji shortcut", Tsukimoji.emoji(half_cycle_later, faces: true) == "\u{1F31D}")
+Tsukimoji::PHASES.each_with_index do |expected, k|
+  want = Tsukimoji::FACES.fetch(k, expected[:emoji])
+  check(failures, "faces: #{expected[:name]} at #{k}/8",
+        Tsukimoji.phase(at_cycle(k / 8.0), faces: true).emoji == want)
+end
+
 # Quarters are half lit.
 check(failures, "first quarter ~50% lit", (Tsukimoji.phase(at_cycle(2 / 8.0)).illumination - 0.5).abs < 0.001)
 check(failures, "last quarter ~50% lit", (Tsukimoji.phase(at_cycle(6 / 8.0)).illumination - 0.5).abs < 0.001)

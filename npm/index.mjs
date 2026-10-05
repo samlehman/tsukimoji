@@ -5,6 +5,7 @@ export const {
   emoji,
   name,
   PHASES,
+  FACES,
   SYNODIC_MONTH_DAYS,
   KNOWN_NEW_MOON_MS,
 } = tsukimoji;

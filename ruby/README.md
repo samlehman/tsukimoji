@@ -13,6 +13,9 @@ phase.illumination  # => 0.87
 
 Tsukimoji.emoji     # just the emoji, for "now"
 Tsukimoji.phase(Time.utc(2026, 1, 1)) # phase for any specific time
+
+# Moon faces: 🌚 for New Moon and 🌝 for Full Moon
+Tsukimoji.emoji(Time.utc(2026, 10, 26, 4), faces: true) # => "🌝"
 ```
 
 ## Installation

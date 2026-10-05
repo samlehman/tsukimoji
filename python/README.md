@@ -15,6 +15,9 @@ emoji()              # just the emoji, for "now"
 
 from datetime import datetime, timezone
 get_moon_phase(datetime(2026, 1, 1, tzinfo=timezone.utc))  # phase for any specific time
+
+# Moon faces: 🌚 for New Moon and 🌝 for Full Moon
+emoji(datetime(2026, 10, 26, 4, tzinfo=timezone.utc), faces=True)  # "🌝"
 ```
 
 ## Installation

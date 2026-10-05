@@ -24,19 +24,24 @@ const PHASES = [
   { emoji: "\u{1F318}", name: "Waning Crescent" },
 ];
 
+// Optional face emoji, by phase index: 🌚 for New Moon, 🌝 for Full Moon.
+const FACES = { 0: "\u{1F31A}", 4: "\u{1F31D}" };
+
 /**
  * Returns the moon phase for the given date (defaults to now).
+ * Pass `{ faces: true }` to get 🌚 and 🌝 for new and full moons.
  * @param {Date} [date]
+ * @param {{faces?: boolean}} [options]
  * @returns {{emoji: string, name: string, ageDays: number, illumination: number}}
  */
-function getMoonPhase(date = new Date()) {
+function getMoonPhase(date = new Date(), { faces = false } = {}) {
   const cycles = (date.getTime() - KNOWN_NEW_MOON_MS) / SYNODIC_MONTH_MS;
   const age = ((cycles % 1) + 1) % 1;
   const index = Math.floor((age + 1 / 16) * 8) % 8;
   const illumination = (1 - Math.cos(age * 2 * Math.PI)) / 2;
   const phase = PHASES[index];
   return {
-    emoji: phase.emoji,
+    emoji: (faces && FACES[index]) || phase.emoji,
     name: phase.name,
     ageDays: age * SYNODIC_MONTH_DAYS,
     illumination,
@@ -44,8 +49,8 @@ function getMoonPhase(date = new Date()) {
 }
 
 /** Shortcut: just the emoji for the given date (defaults to now). */
-function emoji(date) {
-  return getMoonPhase(date).emoji;
+function emoji(date, options) {
+  return getMoonPhase(date, options).emoji;
 }
 
 /** Shortcut: just the phase name for the given date (defaults to now). */
@@ -58,6 +63,7 @@ module.exports = {
   emoji,
   name,
   PHASES,
+  FACES,
   SYNODIC_MONTH_DAYS,
   KNOWN_NEW_MOON_MS,
 };

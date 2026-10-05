@@ -66,14 +66,18 @@ emoji();            // "🌔"  (just the emoji, for now)
 name();             // "Waxing Gibbous"
 
 getMoonPhase(new Date("2026-01-01T00:00:00Z")); // any specific date
+
+// Moon faces: 🌚 for New Moon and 🌝 for Full Moon
+emoji(new Date("2026-10-26T04:00:00Z"), { faces: true }); // "🌝"
 ```
 
 | Export | Description |
 | --- | --- |
-| `getMoonPhase(date?)` | Full result for `date` (defaults to now). |
-| `emoji(date?)` | Just the emoji. |
+| `getMoonPhase(date?, { faces? })` | Full result for `date` (defaults to now). |
+| `emoji(date?, { faces? })` | Just the emoji. |
 | `name(date?)` | Just the phase name. |
 | `PHASES` | The eight `{ emoji, name }` phases, in order. |
+| `FACES` | Face emoji used with `faces: true`, by phase index: `{ 0: "🌚", 4: "🌝" }`. |
 | `SYNODIC_MONTH_DAYS` | Length of a lunar cycle, `29.530588853`. |
 | `KNOWN_NEW_MOON_MS` | Reference new moon, as a Unix timestamp in milliseconds. |
 
@@ -98,6 +102,9 @@ emoji()              # "🌔"  (just the emoji, for now)
 name()               # "Waxing Gibbous"
 
 get_moon_phase(datetime(2026, 1, 1, tzinfo=timezone.utc))  # any specific time
+
+# Moon faces: 🌚 for New Moon and 🌝 for Full Moon
+emoji(datetime(2026, 10, 26, 4, tzinfo=timezone.utc), faces=True)  # "🌝"
 ```
 
 A naive `datetime` (one without a timezone) is treated as UTC. The result is a
@@ -105,10 +112,11 @@ frozen `MoonPhase` dataclass.
 
 | Name | Description |
 | --- | --- |
-| `get_moon_phase(when=None)` | Full `MoonPhase` for `when` (defaults to now). |
-| `emoji(when=None)` | Just the emoji. |
+| `get_moon_phase(when=None, *, faces=False)` | Full `MoonPhase` for `when` (defaults to now). |
+| `emoji(when=None, *, faces=False)` | Just the emoji. |
 | `name(when=None)` | Just the phase name. |
 | `PHASES` | Tuple of the eight `(emoji, name)` pairs, in order. |
+| `FACES` | Face emoji used with `faces=True`, by phase index: `{0: "🌚", 4: "🌝"}`. |
 | `SYNODIC_MONTH_DAYS` | Length of a lunar cycle, `29.530588853`. |
 | `KNOWN_NEW_MOON` | Reference new moon, as a UTC `datetime`. |
 
@@ -138,14 +146,18 @@ Tsukimoji.emoji     # => "🌔"  (just the emoji, for now)
 Tsukimoji.name      # => "Waxing Gibbous"
 
 Tsukimoji.phase(Time.utc(2026, 1, 1)) # any specific time
+
+# Moon faces: 🌚 for New Moon and 🌝 for Full Moon
+Tsukimoji.emoji(Time.utc(2026, 10, 26, 4), faces: true) # => "🌝"
 ```
 
 | Name | Description |
 | --- | --- |
-| `Tsukimoji.phase(time = Time.now.utc)` | Full `Tsukimoji::Phase` for `time`. |
-| `Tsukimoji.emoji(time = Time.now.utc)` | Just the emoji. |
+| `Tsukimoji.phase(time = Time.now.utc, faces: false)` | Full `Tsukimoji::Phase` for `time`. |
+| `Tsukimoji.emoji(time = Time.now.utc, faces: false)` | Just the emoji. |
 | `Tsukimoji.name(time = Time.now.utc)` | Just the phase name. |
 | `Tsukimoji::PHASES` | Array of the eight `{ emoji:, name: }` phases, in order. |
+| `Tsukimoji::FACES` | Face emoji used with `faces: true`, by phase index: `{ 0 => "🌚", 4 => "🌝" }`. |
 | `Tsukimoji::SYNODIC_MONTH_DAYS` | Length of a lunar cycle, `29.530588853`. |
 | `Tsukimoji::KNOWN_NEW_MOON` | Reference new moon, as a UTC `Time`. |
 
@@ -301,7 +313,7 @@ offer:
 - [ ] **Next and previous phases**: dates of the next full moon, new moon, and quarters.
 - [ ] **Phase calendar**: phases for every day of a month or year.
 - [ ] **Southern Hemisphere option**: flip waxing and waning emoji.
-- [ ] **Moon face emoji**: alternative set using 🌚 and 🌝.
+- [x] **Moon face emoji**: 🌚 and 🌝 for new and full moons, with the `faces` option.
 - [ ] **Translated phase names**: starting with Japanese (新月, 満月, and so on).
 - [ ] **Command-line tool**: e.g. `npx tsukimoji` printing tonight's moon.
 - [ ] **Higher-accuracy mode**: correct for the moon's elliptical orbit.

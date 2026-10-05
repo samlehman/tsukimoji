@@ -25,6 +25,9 @@ module Tsukimoji
     { emoji: "\u{1F318}", name: "Waning Crescent" },
   ].freeze
 
+  # Optional face emoji, by phase index: 🌚 for New Moon, 🌝 for Full Moon.
+  FACES = { 0 => "\u{1F31A}", 4 => "\u{1F31D}" }.freeze
+
   # Immutable result of a phase calculation.
   Phase = Struct.new(:emoji, :name, :age_days, :illumination, keyword_init: true) do
     def to_s
@@ -34,7 +37,8 @@ module Tsukimoji
 
   class << self
     # Returns a Tsukimoji::Phase for the given time (defaults to now, UTC).
-    def phase(time = Time.now.utc)
+    # Pass faces: true to get 🌚 and 🌝 for new and full moons.
+    def phase(time = Time.now.utc, faces: false)
       time = time.utc
       elapsed_seconds = time.to_f - KNOWN_NEW_MOON.to_f
       cycles = elapsed_seconds / SYNODIC_MONTH_SECONDS
@@ -44,7 +48,7 @@ module Tsukimoji
 
       data = PHASES[index]
       Phase.new(
-        emoji: data[:emoji],
+        emoji: (faces && FACES[index]) || data[:emoji],
         name: data[:name],
         age_days: age * SYNODIC_MONTH_DAYS,
         illumination: illumination
@@ -52,8 +56,8 @@ module Tsukimoji
     end
 
     # Convenience shortcut: just the emoji for the given time.
-    def emoji(time = Time.now.utc)
-      phase(time).emoji
+    def emoji(time = Time.now.utc, faces: false)
+      phase(time, faces: faces).emoji
     end
 
     # Convenience shortcut: just the phase name for the given time.

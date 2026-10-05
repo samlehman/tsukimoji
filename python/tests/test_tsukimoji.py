@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from tsukimoji import (  # noqa: E402
+    FACES,
     KNOWN_NEW_MOON,
     PHASES,
     SYNODIC_MONTH_DAYS,
@@ -65,6 +66,19 @@ class TestTsukimoji(unittest.TestCase):
             with self.subTest(boundary=f"{2 * k + 1}/16"):
                 self.assertEqual(get_moon_phase(_at_cycle(boundary) - hour).name, before)
                 self.assertEqual(get_moon_phase(_at_cycle(boundary) + hour).name, after)
+
+    def test_faces(self):
+        # 🌚 and 🌝 replace new and full moon, nothing else changes.
+        full = _at_cycle(0.5)
+        self.assertEqual(get_moon_phase(KNOWN_NEW_MOON, faces=True).emoji, "\U0001F31A")
+        self.assertEqual(get_moon_phase(full, faces=True).emoji, "\U0001F31D")
+        self.assertEqual(get_moon_phase(full, faces=True).name, "Full Moon")
+        self.assertEqual(get_moon_phase(KNOWN_NEW_MOON).emoji, "\U0001F311")
+        self.assertEqual(emoji(full, faces=True), "\U0001F31D")
+        for k, (expected_emoji, expected_name) in enumerate(PHASES):
+            with self.subTest(phase=expected_name):
+                want = FACES.get(k, expected_emoji)
+                self.assertEqual(get_moon_phase(_at_cycle(k / 8), faces=True).emoji, want)
 
     def test_quarters_half_lit(self):
         self.assertAlmostEqual(get_moon_phase(_at_cycle(2 / 8)).illumination, 0.5, places=3)

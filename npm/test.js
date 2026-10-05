@@ -6,6 +6,7 @@ const {
   emoji,
   name,
   PHASES,
+  FACES,
   SYNODIC_MONTH_DAYS,
   KNOWN_NEW_MOON_MS,
 } = require("./index.js");
@@ -75,6 +76,17 @@ PHASES.forEach((before, k) => {
     `just after ${2 * k + 1}/16 is ${after.name}`,
     getMoonPhase(atCycle(boundary, HOUR_MS)).name === after.name
   );
+});
+
+// Face emoji option: 🌚 and 🌝 replace new and full moon, nothing else changes.
+check("faces: new moon is 🌚", getMoonPhase(knownNewMoon, { faces: true }).emoji === "\u{1F31A}");
+check("faces: full moon is 🌝", getMoonPhase(halfCycleLater, { faces: true }).emoji === "\u{1F31D}");
+check("faces: names unchanged", getMoonPhase(halfCycleLater, { faces: true }).name === "Full Moon");
+check("faces: off by default", getMoonPhase(knownNewMoon, { faces: false }).emoji === "\u{1F311}");
+check("faces: emoji shortcut", emoji(halfCycleLater, { faces: true }) === "\u{1F31D}");
+PHASES.forEach((expected, k) => {
+  const want = FACES[k] || expected.emoji;
+  check(`faces: ${expected.name} at ${k}/8`, getMoonPhase(atCycle(k / 8), { faces: true }).emoji === want);
 });
 
 // Quarters are half lit.
