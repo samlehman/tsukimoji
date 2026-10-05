@@ -18,6 +18,22 @@ Tsukimoji.phase(Time.utc(2026, 1, 1)) # phase for any specific time
 Tsukimoji.emoji(Time.utc(2026, 10, 26, 4), faces: true) # => "🌝"
 ```
 
+### Phase calendar
+
+```ruby
+Tsukimoji.calendar("2026-10")                 # one CalendarDay per day of October 2026
+Tsukimoji.calendar_csv("2026-11", "2027-02")  # November through February, as CSV
+Tsukimoji.calendar_json(2026)                 # the whole year, as JSON
+Tsukimoji.calendar_text("2026", "2027")       # two years of month grids, as text
+```
+
+Pass a year (`"2026"` or `2026`), a month (`"2026-10"`), a day
+(`"2026-10-04"`) or a `Date` or `Time`, plus an optional second one to make a range.
+Each new moon, quarter and full moon appears on the day it happens, with the
+exact time. See the
+[main README](https://github.com/samlehman/tsukimoji#phase-calendar) for the
+formats.
+
 ## Installation
 
 ```

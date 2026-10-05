@@ -1,7 +1,8 @@
+import json
 import os
 import sys
 import unittest
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -10,6 +11,10 @@ from tsukimoji import (  # noqa: E402
     KNOWN_NEW_MOON,
     PHASES,
     SYNODIC_MONTH_DAYS,
+    calendar,
+    calendar_csv,
+    calendar_json,
+    calendar_text,
     emoji,
     get_moon_phase,
     name,
@@ -83,6 +88,103 @@ class TestTsukimoji(unittest.TestCase):
     def test_quarters_half_lit(self):
         self.assertAlmostEqual(get_moon_phase(_at_cycle(2 / 8)).illumination, 0.5, places=3)
         self.assertAlmostEqual(get_moon_phase(_at_cycle(6 / 8)).illumination, 0.5, places=3)
+
+
+class TestCalendar(unittest.TestCase):
+    def test_ranges(self):
+        self.assertEqual(len(calendar("2026-10")), 31)
+        self.assertEqual(len(calendar("2026")), 365)
+        self.assertEqual(len(calendar(2026)), 365)
+        self.assertEqual(len(calendar("2027", "2028")), 731)
+        self.assertEqual(len(calendar("2026-10-03", "2026-10-05")), 3)
+        winter = calendar("2026-11", "2027-02")
+        self.assertEqual(len(winter), 120)
+        self.assertEqual(winter[0].date, date(2026, 11, 1))
+        self.assertEqual(winter[-1].date, date(2027, 2, 28))
+
+    def test_date_and_datetime_inputs(self):
+        self.assertEqual(calendar(date(2026, 10, 4))[0].date, date(2026, 10, 4))
+        late = datetime(2026, 10, 4, 23, tzinfo=timezone.utc)
+        self.assertEqual(calendar(late)[0].date, date(2026, 10, 4))
+
+    def test_rejects_bad_input(self):
+        for bad in ("2026-13", "2026-02-30", "26", "2026-1", 0):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                calendar(bad)
+        with self.assertRaises(ValueError):
+            calendar("2027", "2026")
+
+    def test_october_2026_events(self):
+        october = calendar("2026-10")
+        events = [f"{d.date} {d.name}" for d in october if d.event_time]
+        self.assertEqual(events, [
+            "2026-10-04 Last Quarter",
+            "2026-10-11 New Moon",
+            "2026-10-18 First Quarter",
+            "2026-10-26 Full Moon",
+        ])
+        self.assertEqual(october[24].name, "Waxing Gibbous")
+
+    def test_principal_phases_once_each(self):
+        principal = {"New Moon", "First Quarter", "Full Moon", "Last Quarter"}
+        names = [n for _, n in PHASES]
+        days = calendar("1999", "2031")
+        for prev, d in zip(days, days[1:]):
+            self.assertEqual(d.name in principal, d.event_time is not None)
+            if d.event_time:
+                self.assertEqual(d.event_time.date(), d.date)
+            self.assertIn((names.index(d.name) - names.index(prev.name)) % 8, (0, 1))
+
+    def test_faces(self):
+        october = calendar("2026-10", faces=True)
+        self.assertEqual(october[10].emoji, "\U0001F31A")
+        self.assertEqual(october[25].emoji, "\U0001F31D")
+        self.assertEqual(october[24].emoji, "\U0001F314")
+
+    # These exact strings are shared by all three languages.
+    def test_csv(self):
+        self.assertEqual(calendar_csv("2026-10-03", "2026-10-05"),
+                         "date,emoji,name,event_time,age_days,illumination\n"
+                         "2026-10-03,🌖,Waning Gibbous,,21.65,0.553\n"
+                         "2026-10-04,🌗,Last Quarter,2026-10-04T00:02Z,22.65,0.447\n"
+                         "2026-10-05,🌘,Waning Crescent,,23.65,0.343\n")
+
+    def test_json(self):
+        self.assertEqual(calendar_json("2026-10-03", "2026-10-05"),
+                         "[\n"
+                         '  {"date": "2026-10-03", "emoji": "🌖", "name": "Waning Gibbous", "event_time": null, "age_days": 21.65, "illumination": 0.553},\n'
+                         '  {"date": "2026-10-04", "emoji": "🌗", "name": "Last Quarter", "event_time": "2026-10-04T00:02Z", "age_days": 22.65, "illumination": 0.447},\n'
+                         '  {"date": "2026-10-05", "emoji": "🌘", "name": "Waning Crescent", "event_time": null, "age_days": 23.65, "illumination": 0.343}\n'
+                         "]\n")
+        self.assertEqual(len(json.loads(calendar_json("2026"))), 365)
+
+    def test_text(self):
+        self.assertEqual(calendar_text("2026-10"),
+                         "October 2026\n"
+                         "   Mo    Tu    We    Th    Fr    Sa    Su\n"
+                         "                   1 🌖  2 🌖  3 🌖  4 🌗\n"
+                         " 5 🌘  6 🌘  7 🌘  8 🌘  9 🌘 10 🌘 11 🌑\n"
+                         "12 🌒 13 🌒 14 🌒 15 🌒 16 🌒 17 🌒 18 🌓\n"
+                         "19 🌔 20 🌔 21 🌔 22 🌔 23 🌔 24 🌔 25 🌔\n"
+                         "26 🌕 27 🌖 28 🌖 29 🌖 30 🌖 31 🌖\n"
+                         "\n"
+                         "🌗 Last Quarter   2026-10-04 00:02 UTC\n"
+                         "🌑 New Moon       2026-10-11 09:13 UTC\n"
+                         "🌓 First Quarter  2026-10-18 18:24 UTC\n"
+                         "🌕 Full Moon      2026-10-26 03:35 UTC\n")
+
+    def test_text_spans_months(self):
+        self.assertEqual(calendar_text("2026-10-30", "2026-11-02"),
+                         "October 2026\n"
+                         "   Mo    Tu    We    Th    Fr    Sa    Su\n"
+                         "                        30 🌖 31 🌖\n"
+                         "\n"
+                         "November 2026\n"
+                         "   Mo    Tu    We    Th    Fr    Sa    Su\n"
+                         "                                     1 🌖\n"
+                         " 2 🌗\n"
+                         "\n"
+                         "🌗 Last Quarter   2026-11-02 12:46 UTC\n")
 
 
 def _at_cycle(cycles):

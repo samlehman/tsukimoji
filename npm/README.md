@@ -19,6 +19,24 @@ getMoonPhase(new Date("2026-01-01")); // phase for any specific date
 emoji(new Date("2026-10-26T04:00:00Z"), { faces: true }); // "🌝"
 ```
 
+### Phase calendar
+
+```js
+const { calendar, calendarCSV, calendarJSON, calendarText } = require("tsukimoji");
+
+calendar("2026-10");                  // one entry per day of October 2026
+calendarCSV("2026-11", "2027-02");    // November through February, as CSV
+calendarJSON(2026);                   // the whole year, as JSON
+calendarText("2026", "2027");         // two years of month grids, as text
+```
+
+Pass a year (`"2026"` or `2026`), a month (`"2026-10"`), a day
+(`"2026-10-04"`) or a `Date`, plus an optional second one to make a range.
+Each new moon, quarter and full moon appears on the day it happens, with the
+exact time. See the
+[main README](https://github.com/samlehman/tsukimoji#phase-calendar) for the
+formats.
+
 ## Installation
 
 ```

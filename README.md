@@ -27,6 +27,7 @@ much of it is lit. It is available for **JavaScript/TypeScript**, **Python**, an
 - [Python](#python)
 - [Ruby](#ruby)
 - [The result](#the-result)
+- [Phase calendar](#phase-calendar)
 - [How it works](#how-it-works)
 - [The math](#the-math)
 - [Accuracy](#accuracy)
@@ -76,6 +77,8 @@ emoji(new Date("2026-10-26T04:00:00Z"), { faces: true }); // "🌝"
 | `getMoonPhase(date?, { faces? })` | Full result for `date` (defaults to now). |
 | `emoji(date?, { faces? })` | Just the emoji. |
 | `name(date?)` | Just the phase name. |
+| `calendar(from, to?, { faces? })` | One entry per day; see [Phase calendar](#phase-calendar). |
+| `calendarCSV`, `calendarJSON`, `calendarText` | The same days as a CSV, JSON or text string. |
 | `PHASES` | The eight `{ emoji, name }` phases, in order. |
 | `FACES` | Face emoji used with `faces: true`, by phase index: `{ 0: "🌚", 4: "🌝" }`. |
 | `SYNODIC_MONTH_DAYS` | Length of a lunar cycle, `29.530588853`. |
@@ -115,6 +118,8 @@ frozen `MoonPhase` dataclass.
 | `get_moon_phase(when=None, *, faces=False)` | Full `MoonPhase` for `when` (defaults to now). |
 | `emoji(when=None, *, faces=False)` | Just the emoji. |
 | `name(when=None)` | Just the phase name. |
+| `calendar(start, end=None, *, faces=False)` | List of `CalendarDay`; see [Phase calendar](#phase-calendar). |
+| `calendar_csv`, `calendar_json`, `calendar_text` | The same days as a CSV, JSON or text string. |
 | `PHASES` | Tuple of the eight `(emoji, name)` pairs, in order. |
 | `FACES` | Face emoji used with `faces=True`, by phase index: `{0: "🌚", 4: "🌝"}`. |
 | `SYNODIC_MONTH_DAYS` | Length of a lunar cycle, `29.530588853`. |
@@ -156,6 +161,8 @@ Tsukimoji.emoji(Time.utc(2026, 10, 26, 4), faces: true) # => "🌝"
 | `Tsukimoji.phase(time = Time.now.utc, faces: false)` | Full `Tsukimoji::Phase` for `time`. |
 | `Tsukimoji.emoji(time = Time.now.utc, faces: false)` | Just the emoji. |
 | `Tsukimoji.name(time = Time.now.utc)` | Just the phase name. |
+| `Tsukimoji.calendar(from, to = nil, faces: false)` | Array of `Tsukimoji::CalendarDay`; see [Phase calendar](#phase-calendar). |
+| `Tsukimoji.calendar_csv`, `calendar_json`, `calendar_text` | The same days as a CSV, JSON or text string. |
 | `Tsukimoji::PHASES` | Array of the eight `{ emoji:, name: }` phases, in order. |
 | `Tsukimoji::FACES` | Face emoji used with `faces: true`, by phase index: `{ 0 => "🌚", 4 => "🌝" }`. |
 | `Tsukimoji::SYNODIC_MONTH_DAYS` | Length of a lunar cycle, `29.530588853`. |
@@ -185,6 +192,117 @@ The eight phases:
 | 🌖 | Waning Gibbous |
 | 🌗 | Last Quarter |
 | 🌘 | Waning Crescent |
+
+## Phase calendar
+
+`calendar` gives one entry per day for a day, a month, a year, or a range of
+any of them. The same call is also available as CSV, JSON or a plain-text
+calendar.
+
+| You pass | You get |
+| --- | --- |
+| `"2026-10-04"` | That day |
+| `"2026-10-01"`, `"2026-10-15"` | Those days, inclusive |
+| `"2026-10"` | That month |
+| `"2026-11"`, `"2027-02"` | November through February |
+| `"2026"` or `2026` | That year |
+| `"2026"`, `"2028"` | 2026 through 2028 |
+
+A range runs from the start of the first value to the end of the second, and
+the two can be different sizes (`"2026-10-20"`, `"2027"`). You can also pass a
+`Date` (JavaScript), `date`/`datetime` (Python) or `Date`/`Time` (Ruby) for a
+single day. All days are UTC.
+
+| | JavaScript | Python | Ruby |
+| --- | --- | --- | --- |
+| Days | `calendar(from, to?)` | `calendar(start, end=None)` | `Tsukimoji.calendar(from, to = nil)` |
+| CSV | `calendarCSV(...)` | `calendar_csv(...)` | `Tsukimoji.calendar_csv(...)` |
+| JSON | `calendarJSON(...)` | `calendar_json(...)` | `Tsukimoji.calendar_json(...)` |
+| Text | `calendarText(...)` | `calendar_text(...)` | `Tsukimoji.calendar_text(...)` |
+
+All of them take the `faces` option too. The exports are strings, so saving
+one is a single call:
+
+```js
+fs.writeFileSync("moon-2026.csv", calendarCSV("2026"));
+```
+
+```python
+Path("moon-2026.json").write_text(calendar_json(2026), encoding="utf-8")
+```
+
+```ruby
+File.write("moon-2026.txt", Tsukimoji.calendar_text(2026))
+```
+
+### How days are chosen
+
+Like a printed moon calendar, each new moon, first quarter, full moon and last
+quarter appears on **one** day: the day it actually happens. That day also
+gets the exact time. The days in between show the crescent or gibbous phase.
+
+This is different from `emoji(date)`, which treats each phase as covering about
+3.7 days. On 2026-10-25, for example, `emoji()` already says 🌕, but the
+calendar shows 🌔 because the full moon itself is on the 26th.
+
+### Text
+
+`calendarText("2026-10")`:
+
+```
+October 2026
+   Mo    Tu    We    Th    Fr    Sa    Su
+                   1 🌖  2 🌖  3 🌖  4 🌗
+ 5 🌘  6 🌘  7 🌘  8 🌘  9 🌘 10 🌘 11 🌑
+12 🌒 13 🌒 14 🌒 15 🌒 16 🌒 17 🌒 18 🌓
+19 🌔 20 🌔 21 🌔 22 🌔 23 🌔 24 🌔 25 🌔
+26 🌕 27 🌖 28 🌖 29 🌖 30 🌖 31 🌖
+
+🌗 Last Quarter   2026-10-04 00:02 UTC
+🌑 New Moon       2026-10-11 09:13 UTC
+🌓 First Quarter  2026-10-18 18:24 UTC
+🌕 Full Moon      2026-10-26 03:35 UTC
+```
+
+Weeks start on Monday. A range covering several months prints one block per
+month.
+
+### CSV and JSON
+
+`calendarCSV("2026-10-03", "2026-10-05")`:
+
+```csv
+date,emoji,name,event_time,age_days,illumination
+2026-10-03,🌖,Waning Gibbous,,21.65,0.553
+2026-10-04,🌗,Last Quarter,2026-10-04T00:02Z,22.65,0.447
+2026-10-05,🌘,Waning Crescent,,23.65,0.343
+```
+
+`calendarJSON("2026-10-03", "2026-10-05")`:
+
+```json
+[
+  {"date": "2026-10-03", "emoji": "🌖", "name": "Waning Gibbous", "event_time": null, "age_days": 21.65, "illumination": 0.553},
+  {"date": "2026-10-04", "emoji": "🌗", "name": "Last Quarter", "event_time": "2026-10-04T00:02Z", "age_days": 22.65, "illumination": 0.447},
+  {"date": "2026-10-05", "emoji": "🌘", "name": "Waning Crescent", "event_time": null, "age_days": 23.65, "illumination": 0.343}
+]
+```
+
+| Column | Meaning |
+| --- | --- |
+| `date` | The UTC day, `YYYY-MM-DD`. |
+| `emoji`, `name` | The phase for that day, chosen as described above. |
+| `event_time` | Exact time of the new moon, quarter or full moon on that day, to the minute. Empty (CSV) or `null` (JSON) on other days. |
+| `age_days`, `illumination` | At 12:00 UTC that day, rounded to 2 and 3 decimal places. |
+
+The files are identical whichever language makes them. Column names use
+`snake_case` in all three, so a file made in JavaScript reads the same as one
+made in Python or Ruby. In memory, the JavaScript fields are `eventTime` and
+`ageDays`.
+
+Event times use the same average lunar cycle as everything else, so they can
+be several hours out, and an event close to midnight can land on the
+neighbouring day. See [Accuracy](#accuracy).
 
 ## How it works
 
@@ -311,7 +429,7 @@ Ideas for future versions, based on what other moon-phase libraries commonly
 offer:
 
 - [ ] **Next and previous phases**: dates of the next full moon, new moon, and quarters.
-- [ ] **Phase calendar**: phases for every day of a month or year.
+- [x] **Phase calendar**: phases for any day, month or year range, as data, CSV, JSON or text.
 - [ ] **Southern Hemisphere option**: flip waxing and waning emoji.
 - [x] **Moon face emoji**: 🌚 and 🌝 for new and full moons, with the `faces` option.
 - [ ] **Translated phase names**: starting with Japanese (新月, 満月, and so on).

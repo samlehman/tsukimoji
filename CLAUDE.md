@@ -59,8 +59,18 @@ The API names follow each language's conventions. Keep them that way:
 | Full result | `getMoonPhase(date?)` | `get_moon_phase(when=None)` | `Tsukimoji.phase(time)` |
 | Shortcuts | `emoji()`, `name()` | `emoji()`, `name()` | `Tsukimoji.emoji`, `Tsukimoji.name` |
 | Face option (🌚/🌝 for new/full) | `{ faces: true }` | `faces=True` | `faces: true` |
+| Calendar | `calendar(from, to?)` | `calendar(start, end=None)` | `Tsukimoji.calendar(from, to = nil)` |
+| Calendar exports | `calendarCSV` / `calendarJSON` / `calendarText` | `calendar_csv` / `calendar_json` / `calendar_text` | same as Python |
 | Age field | `ageDays` | `age_days` | `age_days` |
 | Result type | plain object | frozen `MoonPhase` dataclass | `Tsukimoji::Phase` Struct |
+
+**Phase calendar.** Days are UTC. A principal phase (new, first quarter, full,
+last quarter) goes only on the day its exact time falls in; other days get the
+in-between phase. Event time = reference + n × synodic/4. `age_days` and
+`illumination` are sampled at 12:00 UTC. The CSV, JSON and text exports are
+hand-written (no csv/json library) and must be **byte-identical** across all
+three languages. The tests check exact expected strings, so a format change
+means updating those strings in all three test files.
 
 Python treats a naive `datetime` as UTC. Every library defaults to "now".
 There are no runtime dependencies, and none should be added.
